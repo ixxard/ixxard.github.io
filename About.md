@@ -1,6 +1,6 @@
 layout: page
 title: "Hi. This is Sankrant"
-permalink: /about
+permalink: //about
 
 
 I am a senior software developer currently working at Aquila Clouds.
