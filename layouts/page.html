@@ -1,0 +1,50 @@
+{{ define "main" }}
+{{- $s := partial "series-of.html" . }}
+{{- $part := partial "part.html" . }}
+{{- $isNote := eq .Section "notes" }}
+{{- $toc := and (ne .Params.toc false) (not $isNote) (ge (len .Fragments.HeadingsMap) 3) }}
+{{- /* Code folder for a part: front matter `code`, else code/<series>/<part>/ if it exists. */}}
+{{- $code := .Params.code }}
+{{- if and (not $code) $s $part }}{{ $guess := printf "code/%s/%s" (partial "series-slug.html" $s) $part }}{{ if fileExists $guess }}{{ $code = $guess }}{{ end }}{{ end }}
+<div class="post-grid{{ if $toc }} has-toc{{ end }}">
+  <article class="post-body{{ if $isNote }} note{{ end }}">
+    <header class="post-head">
+      {{- with $s }}
+      <p class="kicker"><a href="{{ .RelPermalink }}">{{ .Title }}</a><span class="sep">/</span><span>part <span class="as-typed">{{ $part }}</span></span></p>
+      {{- else }}{{ with .Section }}{{ with site.GetPage . }}
+      <p class="kicker"><a href="{{ .RelPermalink }}">{{ lower .Title }}</a></p>
+      {{- end }}{{ end }}{{ end }}
+      <h1>{{ .Title }}</h1>
+      {{- with .Description }}
+      <p class="post-desc">{{ . }}</p>
+      {{- end }}
+      {{- if .Section }}{{ partial "meta.html" . }}{{ end }}
+    </header>
+
+    {{- with $s }}{{ partial "series-box.html" (dict "page" $ "series" .) }}{{ end }}
+
+    {{- if $toc }}
+    <details class="toc-inline"><summary>contents</summary>{{ .TableOfContents }}</details>
+    {{- end }}
+
+    <div class="prose">
+      {{ .Content }}
+    </div>
+
+    {{- if or $code (and site.Params.repo .File) }}
+    <p class="post-src">
+      {{- with $code }}<a href="{{ site.Params.repo }}/tree/{{ site.Params.branch | default "main" }}/{{ . }}">code for this {{ if $s }}part{{ else }}post{{ end }}: {{ . }}/</a>{{ end }}
+      {{- with .File }}{{ with site.Params.repo }}<a href="{{ . }}/blob/{{ site.Params.branch | default "main" }}/content/{{ $.File.Path }}">source of this page</a>{{ end }}{{ end }}
+    </p>
+    {{- end }}
+
+    {{ partial "pager.html" . }}
+  </article>
+  {{- if $toc }}
+  <aside class="toc-side" aria-label="Contents">
+    <p class="toc-label">contents</p>
+    {{ .TableOfContents }}
+  </aside>
+  {{- end }}
+</div>
+{{ end }}

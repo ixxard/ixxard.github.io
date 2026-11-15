@@ -1,0 +1,28 @@
+{{- /* One series with its parts in reading order (home page, /series/).
+       Context: dict "s" (series section) "limit" (max rows, 0 = all). */ -}}
+{{- $s := .s -}}
+{{- $d := partialCached "series-data.html" $s $s.RelPermalink -}}
+{{- $rows := $d.all -}}
+{{- $more := 0 -}}
+{{- with .limit }}{{ if gt (len $rows) . }}{{ $more = sub (len $rows) . }}{{ $rows = first . $rows }}{{ end }}{{ end -}}
+<section class="series-block" aria-labelledby="sb-{{ partial "series-slug.html" $s | anchorize }}">
+  <header class="sbk-head">
+    <h3 id="sb-{{ partial "series-slug.html" $s | anchorize }}"><a href="{{ $s.RelPermalink }}">{{ $s.Title }}</a></h3>
+    <span class="sbk-meta">{{ partial "segments.html" (dict "d" $d "cur" "") }}<span>{{ len $d.pub }}/{{ len $d.all }}</span></span>
+  </header>
+  {{- with $s.Description }}<p class="sbk-desc">{{ . }}</p>{{ end }}
+  <ol class="parts">
+    {{- range $rows }}
+    <li{{ if not .url }} class="soon"{{ end }}>
+      <span class="pp">{{ .part }}</span>
+      {{- if .url }}
+      <a href="{{ .url }}">{{ .title }}</a>
+      {{- else }}
+      <span class="t">{{ .title }}</span>
+      {{- end }}
+      <span class="pm">{{ with .page }}{{ if .Draft }}<span class="draft">draft</span> {{ end }}{{ .Date.Format "2006-01-02" }}{{ else }}soon{{ end }}</span>
+    </li>
+    {{- end }}
+  </ol>
+  {{- if $more }}<a class="more" href="{{ $s.RelPermalink }}">+{{ $more }} more parts →</a>{{ end }}
+</section>

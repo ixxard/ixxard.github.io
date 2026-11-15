@@ -1,0 +1,16 @@
+<!doctype html>
+<html lang="{{ site.Language.Lang | default "en" }}">
+<head>
+{{ partial "head.html" . }}
+</head>
+<body class="k-{{ .Kind }}{{ with .Section }} s-{{ . }}{{ end }}">
+<a class="skip" href="#main">Skip to content</a>
+{{- if .IsPage }}<div class="progress" aria-hidden="true"></div>{{ end }}
+{{ partial "header.html" . }}
+<main id="main">
+{{ block "main" . }}{{ end }}
+</main>
+{{ partial "footer.html" . }}
+{{ partial "script.html" . }}
+</body>
+</html>

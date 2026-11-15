@@ -1,0 +1,50 @@
+{{- /*
+  A system register's layout: a bit ruler plus a table of the fields you care about.
+
+    {{< reg name="HCR_EL2" title="Hypervisor Configuration Register" >}}
+    34    | E2H  | host OS runs at EL2 (VHE)
+    27    | TGE  | route EL0 exceptions to EL2
+    0     | VM   | turn on stage-2 translation
+    {{< /reg >}}
+
+  Bits are "n" or "hi:lo". The meaning column takes inline Markdown. width=32 for 32-bit registers.
+*/ -}}
+{{- $name := .Get "name" | default (.Get 0) -}}
+{{- $w := int (.Get "width" | default 64) -}}
+{{- $rows := slice -}}
+{{- $owner := dict -}}
+{{- range $i, $line := split (strings.TrimSpace .Inner) "\n" -}}
+  {{- $c := split $line "|" -}}
+  {{- if ge (len $c) 2 -}}
+    {{- $bits := strings.TrimSpace (index $c 0) -}}
+    {{- $field := strings.TrimSpace (index $c 1) -}}
+    {{- $desc := strings.TrimSpace (delimit (after 2 $c) "|") -}}
+    {{- $hl := split $bits ":" -}}
+    {{- $hi := int (strings.TrimSpace (index $hl 0)) -}}
+    {{- $lo := $hi -}}
+    {{- if gt (len $hl) 1 }}{{ $lo = int (strings.TrimSpace (index $hl 1)) }}{{ end -}}
+    {{- $kind := cond (in (slice "RES0" "RES1" "RAZ" "WI") (upper $field)) "res" (printf "f%d" (mod (len $rows) 3)) -}}
+    {{- range seq $lo $hi }}{{ $owner = merge $owner (dict (string .) (dict "f" $field "k" $kind)) }}{{ end -}}
+    {{- $rows = $rows | append (dict "bits" $bits "field" $field "desc" $desc) -}}
+  {{- end -}}
+{{- end -}}
+<figure class="reg">
+  <figcaption><span class="reg-name">{{ $name }}</span>{{ with .Get "title" }}<span class="reg-title">{{ . }}</span>{{ end }}</figcaption>
+  <div class="reg-ruler" style="--n:{{ $w }}" aria-hidden="true">
+    {{- range seq (sub $w 1) -1 0 -}}
+    {{- $o := index $owner (string .) -}}
+    <i{{ with $o }} class="{{ .k }}"{{ end }} title="bit {{ . }}{{ with $o }} · {{ .f }}{{ end }}"></i>
+    {{- end -}}
+  </div>
+  <div class="reg-scale" aria-hidden="true"><span>{{ sub $w 1 }}</span><span>0</span></div>
+  <div class="table-wrap">
+  <table>
+    <thead><tr><th>bits</th><th>field</th><th>meaning</th></tr></thead>
+    <tbody>
+      {{- range $rows }}
+      <tr><td class="bits">{{ .bits }}</td><td class="field">{{ .field }}</td><td>{{ $.Page.RenderString .desc }}</td></tr>
+      {{- end }}
+    </tbody>
+  </table>
+  </div>
+</figure>

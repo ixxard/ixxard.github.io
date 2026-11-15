@@ -1,0 +1,87 @@
+{{- /*
+  Show code straight from a file in this repo, so the post never drifts from the code.
+
+    {{< src file="code/hvf/00a/vm.c" region="create-vm" >}}
+    {{< src file="code/hvf/00a/vm.c" lines="12-30" hl="3-4" >}}
+    {{< src file="code/hvf/00a/Makefile" >}}                      whole file
+
+  Regions are marked in the source on their own lines, in any comment style:
+      // [blog:create-vm]
+      ...
+      // [/blog:create-vm]
+
+  Options: title="..." (default: the path), lang="c" (default: from the extension),
+           hl="3-4 7" (lines of the snippet to emphasise), linenos=false.
+  A missing file, region or range stops the build with a message saying where.
+*/ -}}
+{{- $file := .Get "file" | default (.Get 0) -}}
+{{- if not $file }}{{ errorf "%s: src needs file=\"code/...\"" .Position }}{{ end -}}
+{{- $file = strings.TrimPrefix "/" $file -}}
+{{- if not (fileExists $file) }}{{ errorf "%s: src: %q not found (paths start at the repo root, e.g. code/hvf/00a/vm.c)" .Position $file }}{{ end -}}
+{{- $all := split (strings.TrimSuffix "\n" (replace (os.ReadFile $file) "\r\n" "\n")) "\n" -}}
+{{- $from := 1 -}}
+{{- $to := len $all -}}
+{{- $label := "" -}}
+
+{{- with .Get "region" -}}
+  {{- $open := printf "[blog:%s]" . -}}
+  {{- $close := printf "[/blog:%s]" . -}}
+  {{- $s := 0 }}{{ $e := 0 -}}
+  {{- range $i, $l := $all -}}
+    {{- if and (eq $s 0) (strings.Contains $l $open) }}{{ $s = add $i 2 -}}
+    {{- else if and (gt $s 0) (eq $e 0) (strings.Contains $l $close) }}{{ $e = $i }}{{ end -}}
+  {{- end -}}
+  {{- if eq $s 0 }}{{ errorf "%s: src: no %q marker in %s" $.Position $open $file -}}
+  {{- else if eq $e 0 }}{{ errorf "%s: src: region %q in %s is never closed with %q" $.Position . $file $close -}}
+  {{- else if lt $e $s }}{{ errorf "%s: src: region %q in %s is empty" $.Position . $file }}{{ end -}}
+  {{- $from = $s }}{{ $to = $e -}}
+{{- else -}}
+  {{- with $.Get "lines" -}}
+    {{- $ab := split (replace (string .) "–" "-") "-" -}}
+    {{- $from = int (index $ab 0) -}}
+    {{- if gt (len $ab) 1 }}{{ $to = int (index $ab 1) }}{{ else }}{{ $to = $from }}{{ end -}}
+    {{- if or (lt $from 1) (gt $to (len $all)) (gt $from $to) -}}
+      {{- errorf "%s: src: lines=%q is outside %s (1-%d)" $.Position . $file (len $all) -}}
+    {{- end -}}
+  {{- end -}}
+{{- end -}}
+{{- if or (ne $from 1) (ne $to (len $all)) }}{{ $label = printf "L%d–%d" $from $to }}{{ end -}}
+
+{{- /* Cut, drop marker lines of other regions, and remove the common indent. */ -}}
+{{- $cut := first (add (sub $to $from) 1) (after (sub $from 1) $all) -}}
+{{- $lines := slice -}}
+{{- $dropped := false -}}
+{{- range $cut -}}
+  {{- if findRE `\[/?blog:[\w.-]+\]` . }}{{ $dropped = true }}{{ else }}{{ $lines = $lines | append . }}{{ end -}}
+{{- end -}}
+{{- $min := 9999 -}}
+{{- range $lines -}}
+  {{- if strings.TrimSpace . -}}
+    {{- $w := len (replaceRE `^([ \t]*).*$` "$1" .) -}}
+    {{- if lt $w $min }}{{ $min = $w }}{{ end -}}
+  {{- end -}}
+{{- end -}}
+{{- $out := slice -}}
+{{- range $lines -}}
+  {{- if strings.TrimSpace . }}{{ $out = $out | append (substr . $min) }}{{ else }}{{ $out = $out | append "" }}{{ end -}}
+{{- end -}}
+
+{{- /* Language from the extension unless given. */ -}}
+{{- $ext := lower (strings.TrimPrefix "." (path.Ext $file)) -}}
+{{- $byExt := dict "h" "c" "s" "armasm" "m" "objective-c" "mm" "objective-c++" "py" "python" "sh" "bash"
+      "mk" "make" "plist" "xml" "entitlements" "xml" "rs" "rust" "patch" "diff" "yml" "yaml" "ld" "text" -}}
+{{- $lang := .Get "lang" | default (index $byExt $ext) | default $ext | default "text" -}}
+{{- if eq (path.Base $file) "Makefile" }}{{ $lang = .Get "lang" | default "make" }}{{ end -}}
+
+{{- /* Line numbers follow the file, unless marker lines were removed from the middle. */ -}}
+{{- $ln := and (ne (printf "%v" (.Get "linenos")) "false") (not $dropped) -}}
+{{- $opts := dict "lineNos" (cond $ln "inline" false) "lineNoStart" $from "hl_Lines" (printf "%v" (.Get "hl" | default "")) -}}
+{{- $html := transform.Highlight (delimit $out "\n") $lang $opts -}}
+
+{{- $href := "" -}}
+{{- with site.Params.repo -}}
+  {{- $href = printf "%s/blob/%s/%s" (strings.TrimSuffix "/" .) (site.Params.branch | default "main") $file -}}
+  {{- if $label }}{{ $href = printf "%s#L%d-L%d" $href $from $to }}{{ end -}}
+{{- end -}}
+{{- $title := .Get "title" | default (strings.TrimPrefix "code/" $file) -}}
+{{- partial "codefig.html" (dict "lang" $lang "title" $title "href" $href "lines" $label "html" $html) -}}

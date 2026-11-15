@@ -1,0 +1,24 @@
+{{- /* ![alt](diagram.png "Caption")  — files next to index.md are found automatically,
+       get width/height (no layout jump) and load lazily. */ -}}
+{{- $u := urls.Parse .Destination -}}
+{{- $src := $u.String -}}
+{{- $w := 0 -}}{{- $h := 0 -}}
+{{- if not $u.IsAbs -}}
+  {{- $path := strings.TrimPrefix "./" $u.Path -}}
+  {{- $r := .PageInner.Resources.Get $path -}}
+  {{- if not $r }}{{ $r = resources.Get $path }}{{ end -}}
+  {{- with $r -}}
+    {{- $src = .RelPermalink -}}
+    {{- if and (eq .ResourceType "image") (ne .MediaType.SubType "svg") }}{{ $w = .Width }}{{ $h = .Height }}{{ end -}}
+  {{- end -}}
+{{- end -}}
+{{- if .IsBlock -}}
+<figure class="fig">
+  <img src="{{ $src }}" alt="{{ .PlainText }}"{{ with $w }} width="{{ . }}" height="{{ $h }}"{{ end }} loading="lazy" decoding="async">
+  {{- with .Title }}
+  <figcaption>{{ $.Page.RenderString . }}</figcaption>
+  {{- end }}
+</figure>
+{{- else -}}
+<img src="{{ $src }}" alt="{{ .PlainText }}"{{ with $w }} width="{{ . }}" height="{{ $h }}"{{ end }} loading="lazy" decoding="async">
+{{- end -}}

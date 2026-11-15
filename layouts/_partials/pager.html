@@ -1,0 +1,31 @@
+{{- /* Previous / next: within the series for parts, by date for posts and notes. */ -}}
+{{- $prev := false -}}
+{{- $next := false -}}
+{{- $series := partial "series-of.html" . -}}
+{{- with $series -}}
+  {{- $d := partialCached "series-data.html" . .RelPermalink -}}
+  {{- range $i, $e := $d.pub -}}
+    {{- if eq $e.url $.RelPermalink -}}
+      {{- if gt $i 0 }}{{ $prev = (index $d.pub (sub $i 1)).page }}{{ end -}}
+      {{- if lt (add $i 1) (len $d.pub) }}{{ $next = (index $d.pub (add $i 1)).page }}{{ end -}}
+    {{- end -}}
+  {{- end -}}
+{{- else -}}
+  {{- if in (slice "posts" "notes") .Section }}{{ $prev = .NextInSection }}{{ $next = .PrevInSection }}{{ end -}}
+{{- end -}}
+{{- if or $prev $next }}
+<nav class="pager" aria-label="Previous and next">
+  {{- with $prev }}
+  <a class="prev" href="{{ .RelPermalink }}" rel="prev">
+    <span class="dir"><kbd>[</kbd> previous{{ if $series }} · part {{ partial "part.html" . }}{{ end }}</span>
+    <span class="t">{{ .LinkTitle }}</span>
+  </a>
+  {{- end }}
+  {{- with $next }}
+  <a class="next" href="{{ .RelPermalink }}" rel="next">
+    <span class="dir">next{{ if $series }} · part {{ partial "part.html" . }}{{ end }} <kbd>]</kbd></span>
+    <span class="t">{{ .LinkTitle }}</span>
+  </a>
+  {{- end }}
+</nav>
+{{- end }}

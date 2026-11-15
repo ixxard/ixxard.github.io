@@ -1,0 +1,7 @@
+{{- /* Progress strip for a series. Context: dict "d" (series-data) "cur" (current url or ""). */ -}}
+{{- $cur := .cur -}}
+<span class="segments" role="img" aria-label="{{ len .d.pub }} of {{ len .d.all }} parts published">
+  {{- range .d.all -}}
+  <i class="{{ if and $cur (eq .url $cur) }}cur{{ else if .url }}on{{ end }}" title="{{ .part }} · {{ .title }}"></i>
+  {{- end -}}
+</span>

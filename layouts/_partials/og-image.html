@@ -1,0 +1,18 @@
+{{- /* Draws a 1200x630 share card from assets/og/base.png: kicker, title, host. */ -}}
+{{- $out := false -}}
+{{- if and site.Params.ogImages (or .IsPage .IsHome) -}}
+  {{- with resources.Get "og/base.png" -}}
+    {{- $accent := site.Params.accent | default "#5ee6c0" -}}
+    {{- $kick := site.Title -}}
+    {{- with partial "series-of.html" $ }}{{ $kick = printf "%s  /  part %s" .Title (partial "part.html" $) }}{{ end -}}
+    {{- if eq $.Section "notes" }}{{ $kick = printf "%s  /  note" site.Title }}{{ end -}}
+    {{- $title := $.Title -}}
+    {{- if $.IsHome }}{{ $title = site.Params.description | default site.Title }}{{ end -}}
+    {{- $out = . | images.Filter
+        (images.Padding 0 0 10 0 $accent)
+        (images.Text $kick (dict "color" $accent "size" 30 "x" 80 "y" 78))
+        (images.Text $title (dict "color" "#ecebe6" "size" 68 "linespacing" 14 "x" 80 "y" 150))
+        (images.Text (urls.Parse site.BaseURL).Host (dict "color" "#76746e" "size" 26 "x" 80 "y" 548)) -}}
+  {{- end -}}
+{{- end -}}
+{{- return $out -}}

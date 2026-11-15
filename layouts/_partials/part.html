@@ -1,0 +1,11 @@
+{{- /* Part label of a series page: front matter `part`, else the folder's number
+       prefix ("00a-first-vm" -> "00a"). Labels sort as text, so zero-pad them. */ -}}
+{{- $p := "" -}}
+{{- with .Params.part -}}
+  {{- $p = string . -}}
+{{- else -}}
+  {{- with .File -}}
+    {{- with findRESubmatch `^(\d+[a-z]*)[-_]` .ContentBaseName 1 }}{{ $p = index . 0 1 }}{{ end -}}
+  {{- end -}}
+{{- end -}}
+{{- return $p -}}

@@ -1,0 +1,11 @@
+<footer class="site-footer">
+  <div class="bar">
+    <span>© {{ now.Year }} {{ site.Params.author | default site.Title }}</span>
+    <span class="foot-links">
+      {{- range site.Params.links }}
+      <a href="{{ .url | relURL }}">{{ .name }}</a>
+      {{- end }}
+    </span>
+    <span class="foot-note">static html · no trackers</span>
+  </div>
+</footer>

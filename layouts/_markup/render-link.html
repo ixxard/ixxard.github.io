@@ -1,0 +1,18 @@
+{{- /* Links to other pages may use their file path: [part 00b](../00b-devices/) or
+       [note](/notes/2026-11-15-esr.md). They resolve to the real URL, and a broken
+       one prints a warning while you write. */ -}}
+{{- $u := urls.Parse .Destination -}}
+{{- $href := $u.String -}}
+{{- if and (not $u.IsAbs) $u.Path (not (hasPrefix $u.Path "#")) -}}
+  {{- $target := strings.TrimSuffix ".md" (strings.TrimSuffix "/index.md" $u.Path) -}}
+  {{- with or (.PageInner.GetPage $target) (.PageInner.Resources.Get $u.Path) -}}
+    {{- $href = .RelPermalink -}}
+    {{- with $u.Fragment }}{{ $href = printf "%s#%s" $href . }}{{ end -}}
+  {{- else -}}
+    {{- if and (not (hasPrefix $u.Path "/index.xml")) (not (fileExists (path.Join "static" $u.Path))) -}}
+      {{- warnf "%s: link %q does not resolve to a page" $.PageInner.File.Path .Destination -}}
+    {{- end -}}
+  {{- end -}}
+{{- end -}}
+<a href="{{ $href }}"{{ with .Title }} title="{{ . }}"{{ end }}{{ if $u.IsAbs }} rel="noopener"{{ end }}>{{ .Text }}</a>
+{{- /* no trailing newline */ -}}

@@ -1,0 +1,3 @@
+{{- /* ```c {title="vm.c" hl_lines="2-3" linenos=true}  */ -}}
+{{- $r := transform.HighlightCodeBlock . -}}
+{{- partial "codefig.html" (dict "lang" .Type "title" .Attributes.title "html" $r.Wrapped) -}}

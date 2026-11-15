@@ -1,0 +1,9 @@
+{{ define "main" }}
+<div class="wrap">
+  <header class="list-head">
+    <p class="kicker"><a href="{{ .Parent.RelPermalink }}">tags</a></p>
+    <h1>#{{ .Title }}</h1>
+  </header>
+  {{ partial "log.html" (dict "pages" .Pages) }}
+</div>
+{{ end }}

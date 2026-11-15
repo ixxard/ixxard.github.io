@@ -1,0 +1,9 @@
+{{- $s := partial "series-of.html" . -}}
+<li>
+  <time datetime="{{ .Date.Format "2006-01-02" }}">{{ .Date.Format "01-02" }}</time>
+  <a href="{{ .RelPermalink }}">{{ .LinkTitle }}</a>
+  <span class="log-tag">
+    {{- if .Draft }}<span class="draft">draft</span> {{ end -}}
+    {{- with $s }}{{ partial "series-slug.html" . }}/{{ partial "part.html" $ }}{{ else }}{{ if eq $.Section "notes" }}note{{ end }}{{ end -}}
+  </span>
+</li>

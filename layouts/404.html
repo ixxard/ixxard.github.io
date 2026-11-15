@@ -1,0 +1,8 @@
+{{ define "main" }}
+<div class="wrap notfound">
+  <pre class="term"><span class="gp">$</span> cat <span id="nf-path">this-page</span>
+cat: <span id="nf-path2">this-page</span>: No such file or directory
+<span class="gp">$</span> cd <a href="{{ "/" | relURL }}">~</a></pre>
+</div>
+<script>(function(){var p=decodeURIComponent(location.pathname);document.getElementById("nf-path").textContent=p;document.getElementById("nf-path2").textContent=p})()</script>
+{{ end }}

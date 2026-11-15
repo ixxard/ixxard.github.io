@@ -1,0 +1,22 @@
+{{ define "main" }}
+{{- /* Notes read like a notebook: every note in full, newest first. */}}
+<div class="wrap">
+  <header class="list-head">
+    <h1>{{ .Title }}</h1>
+    {{- with .Description }}<p class="post-desc">{{ . }}</p>{{ end }}
+    {{- with .OutputFormats.Get "rss" }}<p class="post-meta"><a href="{{ .RelPermalink }}">rss for notes</a></p>{{ end }}
+  </header>
+  {{- with .Content }}<div class="prose">{{ . }}</div>{{ end }}
+  {{- range .RegularPages }}
+  <article class="note-entry">
+    <header>
+      <h2><a href="{{ .RelPermalink }}">{{ .Title }}</a></h2>
+      {{ partial "meta.html" . }}
+    </header>
+    <div class="prose">{{ .Content }}</div>
+  </article>
+  {{- else }}
+  <p class="empty">No notes yet.</p>
+  {{- end }}
+</div>
+{{ end }}

@@ -1,0 +1,19 @@
+{{- /* Context: a series section. Returns
+       pub: published parts, sorted by part label
+       all: published parts + roadmap entries not yet written, sorted
+     Each entry is a dict: part, title, url ("" for roadmap), page (published only). */ -}}
+{{- $items := slice -}}
+{{- $have := slice -}}
+{{- range .RegularPages -}}
+  {{- $part := partial "part.html" . -}}
+  {{- $items = $items | append (dict "part" $part "title" .LinkTitle "url" .RelPermalink "page" .) -}}
+  {{- $have = $have | append $part -}}
+{{- end -}}
+{{- $pub := sort $items "part" -}}
+{{- range .Params.roadmap -}}
+  {{- $part := string .part -}}
+  {{- if not (in $have $part) -}}
+    {{- $items = $items | append (dict "part" $part "title" .title "url" "") -}}
+  {{- end -}}
+{{- end -}}
+{{- return dict "pub" $pub "all" (sort $items "part") -}}

@@ -1,0 +1,2 @@
+{{- /* Short name of a series section: front matter `short`, else its folder name. */ -}}
+{{- return (.Params.short | default (path.Base .Path)) -}}

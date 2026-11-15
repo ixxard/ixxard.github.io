@@ -1,0 +1,28 @@
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+{{- $title := site.Title }}
+{{- if not .IsHome }}{{ $title = printf "%s · %s" .Title site.Title }}{{ end }}
+{{- $desc := site.Params.description }}
+{{- with .Description }}{{ $desc = . }}{{ else }}{{ if .IsPage }}{{ with .Summary | plainify | strings.TrimSpace }}{{ $desc = . | truncate 160 }}{{ end }}{{ end }}{{ end }}
+<title>{{ $title }}</title>
+<meta name="description" content="{{ $desc }}">
+<meta name="author" content="{{ site.Params.author }}">
+<link rel="canonical" href="{{ .Permalink }}">
+<link rel="icon" href="{{ "favicon.svg" | relURL }}" type="image/svg+xml">
+<meta name="color-scheme" content="light dark">
+<meta name="theme-color" media="(prefers-color-scheme: light)" content="#f5f4ef">
+<meta name="theme-color" media="(prefers-color-scheme: dark)" content="#0b0c0d">
+{{- with site.Home.OutputFormats.Get "rss" }}
+<link rel="alternate" type="application/rss+xml" href="{{ .Permalink }}" title="{{ site.Title }}">
+{{- end }}
+{{- if not .IsHome }}{{ with .OutputFormats.Get "rss" }}
+<link rel="alternate" type="application/rss+xml" href="{{ .Permalink }}" title="{{ $.Title }} · {{ site.Title }}">
+{{- end }}{{ end }}
+<script>(function(){var t;try{t=localStorage.getItem("theme")}catch(e){}t=t||{{ site.Params.defaultTheme | default "auto" }};if(t!=="auto")document.documentElement.dataset.theme=t})()</script>
+{{- $css := resources.Get "css/main.css" | minify }}
+<style>{{ $css.Content | safeCSS }}</style>
+{{- with site.Params.accent }}
+<style>:root{--accent-base:{{ . | safeCSS }}}</style>
+{{- end }}
+{{ partial "social.html" (dict "page" . "desc" $desc) }}
+<script type="speculationrules">{"prerender":[{"where":{"and":[{"href_matches":"/*"},{"not":{"href_matches":"/*.xml"}}]},"eagerness":"moderate"}]}</script>

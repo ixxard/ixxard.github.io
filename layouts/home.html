@@ -1,0 +1,59 @@
+{{ define "main" }}
+<div class="home-grid">
+  <div class="home-main">
+    <section class="intro">
+      <h1 class="intro-name">{{ site.Params.brand | default site.Title | safeHTML }}</h1>
+      {{- with .Content }}
+      <div class="intro-bio prose">{{ . }}</div>
+      {{- else }}{{ with site.Params.bio }}
+      <p class="intro-bio">{{ . | $.RenderString }}</p>
+      {{- end }}{{ end }}
+      {{- with site.Params.links }}
+      <p class="intro-links">{{ range . }}<a href="{{ .url | relURL }}">{{ .name }}</a>{{ end }}</p>
+      {{- end }}
+    </section>
+
+    {{- $series := partial "series-list.html" . }}
+    {{- with $series }}
+    <section class="block" aria-labelledby="h-series">
+      <h2 class="label" id="h-series"><a href="{{ "series/" | relURL }}">series</a></h2>
+      {{- range . }}{{ partial "series-block.html" (dict "s" . "limit" 12) }}{{ end }}
+    </section>
+    {{- end }}
+
+    {{- $posts := where (partial "writing.html" .) "Section" "posts" }}
+    {{- with $posts }}
+    <section class="block" aria-labelledby="h-posts">
+      <h2 class="label" id="h-posts"><a href="{{ "posts/" | relURL }}">posts</a></h2>
+      {{ partial "log.html" (dict "pages" .) }}
+    </section>
+    {{- end }}
+
+    {{- if not (or $series $posts (where site.RegularPages "Section" "notes")) }}
+    <p class="empty">Nothing published yet. Run <code>make dev</code> to see drafts.</p>
+    {{- end }}
+  </div>
+
+  <aside class="home-rail">
+    {{- $notes := where site.RegularPages "Section" "notes" }}
+    {{- $n := site.Params.notesOnHome | default 8 }}
+    {{- with $notes }}
+    <section class="block" aria-labelledby="h-notes">
+      <h2 class="label" id="h-notes"><a href="{{ "notes/" | relURL }}">notes</a></h2>
+      <ol class="rail-list">
+        {{- range first $n . }}
+        <li><time datetime="{{ .Date.Format "2006-01-02" }}">{{ .Date.Format "2006-01-02" }}</time><a href="{{ .RelPermalink }}">{{ .LinkTitle }}</a></li>
+        {{- end }}
+      </ol>
+      {{- if gt (len .) $n }}<a class="more" href="{{ "notes/" | relURL }}">all {{ len . }} notes →</a>{{ end }}
+    </section>
+    {{- end }}
+    {{- with site.Taxonomies.tags }}
+    <section class="block" aria-labelledby="h-tags">
+      <h2 class="label" id="h-tags"><a href="{{ "tags/" | relURL }}">tags</a></h2>
+      <p class="rail-tags">{{ range .ByCount }}<a href="{{ .Page.RelPermalink }}">#{{ .Page.LinkTitle }}</a>{{ end }}</p>
+    </section>
+    {{- end }}
+  </aside>
+</div>
+{{ end }}

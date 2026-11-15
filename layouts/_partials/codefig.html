@@ -1,0 +1,24 @@
+{{- /* Frame for every code block. dict: lang, html, title?, href?, lines? */ -}}
+{{- $lang := .lang | default "text" -}}
+{{- $label := $lang -}}
+{{- if in (slice "console" "shell-session" "sh" "bash" "zsh" "shell") $lang }}{{ $label = "shell" }}{{ end -}}
+{{- if in (slice "text" "plaintext" "txt" "") $lang }}{{ $label = "" }}{{ end -}}
+{{- if eq $lang "armasm" }}{{ $label = "asm" }}{{ end -}}
+<figure class="code{{ if .title }} has-bar{{ end }}" data-lang="{{ $lang }}">
+{{- if .title }}
+  <figcaption class="code-bar">
+    {{- if .href }}
+    <a class="code-title" href="{{ .href }}" title="Open on GitHub">{{ .title }}</a>
+    {{- else }}
+    <span class="code-title">{{ .title }}</span>
+    {{- end }}
+    {{- with .lines }}<span class="code-lines">{{ . }}</span>{{ end }}
+    {{- with $label }}<span class="code-lang">{{ . }}</span>{{ end }}
+    <button class="copy" type="button">copy</button>
+  </figcaption>
+{{- else }}
+  {{- with $label }}<span class="code-lang float">{{ . }}</span>{{ end }}
+  <button class="copy float" type="button">copy</button>
+{{- end }}
+  {{ .html }}
+</figure>

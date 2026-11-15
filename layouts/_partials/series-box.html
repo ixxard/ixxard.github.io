@@ -1,0 +1,28 @@
+{{- /* Collapsible "where am I in this series" box at the top of a part. */ -}}
+{{- $p := .page -}}
+{{- $s := .series -}}
+{{- $d := partialCached "series-data.html" $s $s.RelPermalink -}}
+{{- $n := 0 -}}
+{{- range $i, $e := $d.all }}{{ if eq $e.url $p.RelPermalink }}{{ $n = add $i 1 }}{{ end }}{{ end -}}
+<details class="series-box">
+  <summary>
+    <span class="sb-label">series</span>
+    <span class="sb-title">{{ $s.Title }}</span>
+    <span class="sb-count">{{ $n }}/{{ len $d.all }}</span>
+    {{ partial "segments.html" (dict "d" $d "cur" $p.RelPermalink) }}
+  </summary>
+  <ol class="sb-list">
+    {{- range $d.all }}
+    <li{{ if eq .url $p.RelPermalink }} aria-current="page"{{ else if not .url }} class="soon"{{ end }}>
+      <span class="sb-part">{{ .part }}</span>
+      {{- if and .url (ne .url $p.RelPermalink) }}
+      <a href="{{ .url }}">{{ .title }}</a>
+      {{- else }}
+      <span>{{ .title }}</span>
+      {{- end }}
+      {{- if not .url }}<em>soon</em>{{ end }}
+    </li>
+    {{- end }}
+  </ol>
+  <a class="sb-all" href="{{ $s.RelPermalink }}">series overview →</a>
+</details>

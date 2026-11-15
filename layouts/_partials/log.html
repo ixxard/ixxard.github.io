@@ -1,0 +1,11 @@
+{{- /* Dated index of pages, grouped by year. Context: dict "pages" "empty". */ -}}
+{{- with .pages }}
+{{- range .GroupByDate "2006" }}
+<h3 class="year">{{ .Key }}</h3>
+<ol class="log">
+  {{- range .Pages }}{{ partial "log-row.html" . }}{{ end }}
+</ol>
+{{- end }}
+{{- else }}
+<p class="empty">{{ .empty | default "Nothing here yet." }}</p>
+{{- end }}

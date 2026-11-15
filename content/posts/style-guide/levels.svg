@@ -1,0 +1,14 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 520 190" width="520" height="190" font-family="ui-monospace, SF Mono, Menlo, monospace" font-size="14">
+  <style>
+    .box { fill: none; stroke: #8a877f; stroke-width: 1.2; }
+    .acc { fill: none; stroke: #5ee6c0; stroke-width: 1.6; }
+    text { fill: #8a877f; }
+    .t { fill: currentColor; }
+  </style>
+  <rect class="box" x="10" y="10" width="500" height="48" rx="5"/>
+  <text x="26" y="39">EL0</text><text x="100" y="39" class="t" style="fill:#8a877f">applications</text>
+  <rect class="box" x="10" y="70" width="500" height="48" rx="5"/>
+  <text x="26" y="99">EL1</text><text x="100" y="99" style="fill:#8a877f">guest kernel</text>
+  <rect class="acc" x="10" y="130" width="500" height="48" rx="5"/>
+  <text x="26" y="159" style="fill:#5ee6c0">EL2</text><text x="100" y="159" style="fill:#5ee6c0">hypervisor</text>
+</svg>

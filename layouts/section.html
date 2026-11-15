@@ -1,0 +1,10 @@
+{{ define "main" }}
+<div class="wrap">
+  <header class="list-head">
+    <h1>{{ .Title }}</h1>
+    {{- with .Description }}<p class="post-desc">{{ . }}</p>{{ end }}
+  </header>
+  {{- with .Content }}<div class="prose">{{ . }}</div>{{ end }}
+  {{ partial "log.html" (dict "pages" (where .RegularPagesRecursive "Params.hidden" "!=" true)) }}
+</div>
+{{ end }}

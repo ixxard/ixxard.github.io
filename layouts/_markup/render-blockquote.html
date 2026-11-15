@@ -1,0 +1,26 @@
+{{- /* GitHub-style callouts, which also render on github.com:
+       > [!NOTE]                      > [!WARNING]
+       > [!HOOD] Under the hood       custom type + custom title
+       > [!EXERCISE]- Try it          "-" starts folded, "+" starts open */ -}}
+{{- if eq .Type "alert" -}}
+  {{- $t := lower .AlertType -}}
+  {{- $names := dict
+        "note" "Note" "tip" "Tip" "important" "Important" "warning" "Warning" "caution" "Caution"
+        "hood" "Under the hood" "exercise" "Exercise" "aside" "Aside" "spec" "From the spec" -}}
+  {{- $label := .AlertTitle | default (index $names $t) | default (title $t) -}}
+  {{- if .AlertSign -}}
+<details class="callout c-{{ $t }}"{{ if eq .AlertSign "+" }} open{{ end }}>
+  <summary class="callout-label">{{ $label }}</summary>
+  <div class="callout-body">{{ .Text }}</div>
+</details>
+  {{- else -}}
+<aside class="callout c-{{ $t }}">
+  <p class="callout-label">{{ $label }}</p>
+  <div class="callout-body">{{ .Text }}</div>
+</aside>
+  {{- end -}}
+{{- else -}}
+<blockquote>
+  {{ .Text }}
+</blockquote>
+{{- end -}}

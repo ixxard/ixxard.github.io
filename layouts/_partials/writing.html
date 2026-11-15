@@ -1,0 +1,4 @@
+{{- /* Everything that belongs in the "writing" index: posts and series parts. */ -}}
+{{- $p := where site.RegularPages "Section" "in" (slice "posts" "series") -}}
+{{- $p = where $p "Params.hidden" "!=" true -}}
+{{- return $p -}}

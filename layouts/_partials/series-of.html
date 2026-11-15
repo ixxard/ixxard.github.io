@@ -1,0 +1,6 @@
+{{- /* The series section a page belongs to (content/series/<name>/...), or false. */ -}}
+{{- $r := false -}}
+{{- if and .IsPage (eq .Section "series") -}}
+  {{- with .CurrentSection }}{{ if ne .Path "/series" }}{{ $r = . }}{{ end }}{{ end -}}
+{{- end -}}
+{{- return $r -}}

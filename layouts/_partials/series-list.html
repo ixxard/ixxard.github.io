@@ -1,0 +1,9 @@
+{{- /* Series sections worth showing: at least one published part or a roadmap. */ -}}
+{{- $out := slice -}}
+{{- with site.GetPage "/series" -}}
+  {{- range .Sections.ByWeight -}}
+    {{- $d := partialCached "series-data.html" . .RelPermalink -}}
+    {{- if $d.pub }}{{ $out = $out | append . }}{{ end -}}
+  {{- end -}}
+{{- end -}}
+{{- return $out -}}

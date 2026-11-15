@@ -1,0 +1,38 @@
+{{ define "main" }}
+<div class="wrap">
+{{- if eq .Path "/series" }}
+  <header class="list-head">
+    <h1>{{ .Title }}</h1>
+    {{- with .Description }}<p class="post-desc">{{ . }}</p>{{ end }}
+  </header>
+  {{- with .Content }}<div class="prose">{{ . }}</div>{{ end }}
+  {{- range partial "series-list.html" . }}{{ partial "series-block.html" (dict "s" . "limit" 0) }}{{ else }}
+  <p class="empty">No series published yet.</p>
+  {{- end }}
+
+{{- else }}
+  {{- $d := partialCached "series-data.html" . .RelPermalink }}
+  <header class="list-head">
+    <p class="kicker"><a href="{{ .Parent.RelPermalink }}">series</a><span class="sep">/</span>{{ partial "series-slug.html" . }}</p>
+    <h1>{{ .Title }}</h1>
+    {{- with .Description }}<p class="post-desc">{{ . }}</p>{{ end }}
+    <p class="post-meta">{{ partial "segments.html" (dict "d" $d "cur" "") }}<span>{{ len $d.pub }} of {{ len $d.all }} parts</span>{{ with .OutputFormats.Get "rss" }}<a href="{{ .RelPermalink }}">rss for this series</a>{{ end }}</p>
+  </header>
+  {{- with .Content }}<div class="prose series-intro">{{ . }}</div>{{ end }}
+  <ol class="parts parts-full">
+    {{- range $d.all }}
+    <li{{ if not .url }} class="soon"{{ end }}>
+      <span class="pp">{{ .part }}</span>
+      <div class="pt">
+        {{- if .url }}<a href="{{ .url }}">{{ .title }}</a>{{ else }}<span class="t">{{ .title }}</span>{{ end }}
+        {{- with .page }}{{ with .Description }}<p>{{ . }}</p>{{ end }}{{ end }}
+      </div>
+      <span class="pm">{{ with .page }}{{ if .Draft }}<span class="draft">draft</span> {{ end }}{{ .Date.Format "2006-01-02" }} · {{ .ReadingTime }} min{{ else }}soon{{ end }}</span>
+    </li>
+    {{- else }}
+    <li class="soon"><span class="t">No parts yet.</span></li>
+    {{- end }}
+  </ol>
+{{- end }}
+</div>
+{{ end }}

@@ -1,0 +1,90 @@
+# ─────────────────────────────────────────────────────────────────────────────
+#  Make it yours: everything personal lives in this block and in [params].
+# ─────────────────────────────────────────────────────────────────────────────
+baseURL      = "https://ixxard.github.io/"   # CI replaces this with your real Pages URL
+title        = "ixxard"                      # browser tab, feeds, share cards
+locale       = "en-us"
+
+# (machinery: must sit above the first [table] in TOML)
+enableRobotsTXT      = true
+summaryLength        = 30
+capitalizeListTitles = false   # tags stay as you typed them: #arm64, not #Arm64
+
+[params]
+  author      = "ixxard"
+
+  # Wordmark in the top-left corner. Plain text, or wrap a piece in <em> to paint
+  # it in the accent colour, e.g. "ixxard<em>//el2</em>".
+  brand       = "ixxard<em>//el2</em>"
+
+  # One or two lines under your name on the home page. Markdown is fine.
+  bio         = "Notes from building a hypervisor on Apple silicon, one instruction at a time."
+
+  # Used for search engines and share cards when a page has no description.
+  description = "Hypervisors, Arm64 and systems programming, written up from the code."
+
+  # One colour drives links, highlights, the reading bar and share cards.
+  # Some that work in both themes: "#5ee6c0" mint, "#ff7a45" ember,
+  # "#7aa2ff" signal blue, "#f5c542" sodium, "#ff6ad5" magenta.
+  accent       = "#5ee6c0"
+  defaultTheme = "auto"            # auto | dark | light   (readers can still toggle with t)
+
+  # Where this site's source lives: powers "view on GitHub" links on code and pages.
+  repo   = "https://github.com/ixxard/ixxard.github.io"
+  branch = "main"
+
+  ogImages    = true  # draw a share card (1200x630) for every post
+  notesOnHome = 8     # how many recent notes the home page lists
+
+  # Links shown under your bio and in the footer. Add, remove, reorder.
+  # (Keep these last in [params]: in TOML, keys after [[...]] belong to it.)
+  [[params.links]]
+    name = "github"
+    url  = "https://github.com/ixxard"
+  [[params.links]]
+    name = "rss"
+    url  = "/index.xml"
+
+# Top navigation. Add, remove or reorder freely.
+[[menus.main]]
+  name = "series"
+  pageRef = "/series"
+  weight = 10
+[[menus.main]]
+  name = "notes"
+  pageRef = "/notes"
+  weight = 20
+[[menus.main]]
+  name = "tags"
+  pageRef = "/tags"
+  weight = 30
+# "about" adds itself from content/about.md once that page is not a draft.
+
+# ─────────────────────────────────────────────────────────────────────────────
+#  Machinery. You shouldn't need to touch anything below.
+# ─────────────────────────────────────────────────────────────────────────────
+[taxonomies]
+  tag = "tags"
+
+[services.rss]
+  limit = 40
+
+[markup]
+  [markup.goldmark.renderer]
+    unsafe = true                 # raw HTML and inline <svg> are allowed in posts
+  [markup.goldmark.parser]
+    wrapStandAloneImageWithinParagraph = false
+    [markup.goldmark.parser.attribute]
+      block = true
+      title = true
+  [markup.highlight]
+    noClasses          = false    # colours come from main.css, so they follow the theme
+    lineNumbersInTable = false
+    guessSyntax        = false
+    tabWidth           = 4
+  [markup.tableOfContents]
+    startLevel = 2
+    endLevel   = 3
+
+[minify.tdewolff.html]
+  keepWhitespace = false
