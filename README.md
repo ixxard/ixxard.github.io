@@ -1,6 +1,6 @@
-# ixxard.github.io
+# Sankrant's Tech Blog
 
-A personal site for multi-part series, standalone posts and short notes. You write Markdown; Hugo renders it to plain static HTML. GitHub Actions publishes it on every push.
+Source of <https://sankrant.systems>, served by GitHub Pages from `ixxard/ixxard.github.io`. A personal site for multi-part series, standalone posts and short notes. You write Markdown; Hugo renders it to plain static HTML. GitHub Actions publishes it on every push.
 
 - **Writing:** [WRITING.md](WRITING.md) has the cheat sheet. `make dev` serves a live preview with drafts, and `/posts/style-guide/` shows every element.
 - **Making it yours:** the top of [hugo.toml](hugo.toml) holds your name, wordmark, bio, accent colour, links and default theme.

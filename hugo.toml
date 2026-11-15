@@ -1,8 +1,8 @@
 # ─────────────────────────────────────────────────────────────────────────────
 #  Make it yours: everything personal lives in this block and in [params].
 # ─────────────────────────────────────────────────────────────────────────────
-baseURL      = "https://ixxard.github.io/"   # CI replaces this with your real Pages URL
-title        = "ixxard"                      # browser tab, feeds, share cards
+baseURL      = "https://sankrant.systems/"   # CI uses the domain set in GitHub Pages
+title        = "Sankrant's Tech Blog"        # browser tab, feeds, share cards
 locale       = "en-us"
 
 # (machinery: must sit above the first [table] in TOML)
@@ -11,11 +11,11 @@ summaryLength        = 30
 capitalizeListTitles = false   # tags stay as you typed them: #arm64, not #Arm64
 
 [params]
-  author      = "ixxard"
+  author      = "Sankrant"
 
-  # Wordmark in the top-left corner. Plain text, or wrap a piece in <em> to paint
-  # it in the accent colour, e.g. "ixxard<em>//el2</em>".
-  brand       = "ixxard<em>//el2</em>"
+  # Wordmark in the top-left corner and the big name on the home page. Plain text,
+  # or wrap a piece in <em> to paint it in the accent colour.
+  brand       = "Sankrant's <em>Tech Blog</em>"
 
   # One or two lines under your name on the home page. Markdown is fine.
   bio         = "Notes from building a hypervisor on Apple silicon, one instruction at a time."
