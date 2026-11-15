@@ -35,6 +35,9 @@ ignoreFiles          = ['(^|/)\.obsidian/', '(^|/)\.trash/', '(^|/)_templates/']
   branch = "main"
 
   ogImages    = true  # draw a share card (1200x630) for every post
+
+  # Page views at https://ixxard.goatcounter.com (no cookies). Live site only; remove to turn off.
+  goatcounter = "https://ixxard.goatcounter.com/count"
   notesOnHome = 8     # how many recent notes the home page lists
 
   # Links shown under your bio and in the footer. Add, remove, reorder.

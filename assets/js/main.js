@@ -42,6 +42,12 @@
     b._t = setTimeout(() => { b.textContent = "copy"; b.classList.remove("ok"); }, 1400);
   });
 
+  // Links that leave the site open in a new tab. The templates already mark them;
+  // this catches any raw <a> written in a post.
+  d.querySelectorAll('a[href^="http"]:not([target])').forEach((a) => {
+    if (a.host !== location.host) { a.target = "_blank"; a.rel = "noopener"; }
+  });
+
   // Contents sidebar: mark the section being read.
   const toc = d.querySelector(".toc-side");
   if (toc) {

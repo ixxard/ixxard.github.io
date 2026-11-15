@@ -1,0 +1,10 @@
+{{- /* Link attributes for a URL. Links that leave the site open in a new tab;
+       links within it stay in the same tab. Context: the href string.
+       Use inside a tag:  <a href="{{ $u }}"{{ partial "ext.html" $u }}>
+       It returns a typed attribute value, so the template escaper keeps it as is. */ -}}
+{{- $attrs := "" | safeHTMLAttr -}}
+{{- $u := urls.Parse (string .) -}}
+{{- if and $u.IsAbs (in (slice "http" "https") $u.Scheme) (ne $u.Host (urls.Parse site.BaseURL).Host) -}}
+  {{- $attrs = `target="_blank" rel="noopener"` | safeHTMLAttr -}}
+{{- end -}}
+{{- return $attrs -}}

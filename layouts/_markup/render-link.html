@@ -14,5 +14,5 @@
     {{- end -}}
   {{- end -}}
 {{- end -}}
-<a href="{{ $href }}"{{ with .Title }} title="{{ . }}"{{ end }}{{ if $u.IsAbs }} rel="noopener"{{ end }}>{{ .Text }}</a>
+<a href="{{ $href }}"{{ with .Title }} title="{{ . }}"{{ end }} {{ partial "ext.html" $href }}>{{ .Text }}</a>
 {{- /* no trailing newline */ -}}

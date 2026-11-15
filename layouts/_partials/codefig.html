@@ -8,7 +8,7 @@
 {{- if .title }}
   <figcaption class="code-bar">
     {{- if .href }}
-    <a class="code-title" href="{{ .href }}" title="Open on GitHub">{{ .title }}</a>
+    <a class="code-title" href="{{ .href }}" {{ partial "ext.html" .href }} title="Open on GitHub">{{ .title }}</a>
     {{- else }}
     <span class="code-title">{{ .title }}</span>
     {{- end }}

@@ -1,0 +1,16 @@
+{{- /* GoatCounter page views: no cookies, nothing personal stored. Only in production
+       builds (CI), so `make dev` previews never count. The site prerenders likely next
+       pages; those count only once a reader actually opens them. */ -}}
+{{- with site.Params.goatcounter }}{{ if hugo.IsProduction }}
+<script>(() => {
+  const load = () => {
+    const s = document.createElement("script");
+    s.async = true;
+    s.src = "https://gc.zgo.at/count.js";
+    s.dataset.goatcounter = {{ . }};
+    document.head.append(s);
+  };
+  if (document.prerendering) document.addEventListener("prerenderingchange", load, { once: true });
+  else load();
+})();</script>
+{{- end }}{{ end }}

@@ -5,7 +5,7 @@ date: {{ .Date }}
 draft: true
 tags: []
 # part: "00a"              # optional: defaults to this folder's prefix. Always quote it.
-# code: "code/hvf/00a"     # optional: defaults to code/<series>/<part> when that folder exists
+# code: "code/hvf/00a"     # optional: a folder here, or a URL like https://github.com/ixxard/AppleHypervizorExperiments/tree/part2
 ---
 
 <!--

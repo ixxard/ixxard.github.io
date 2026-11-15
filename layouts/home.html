@@ -9,7 +9,7 @@
       <p class="intro-bio">{{ . | $.RenderString }}</p>
       {{- end }}{{ end }}
       {{- with site.Params.links }}
-      <p class="intro-links">{{ range . }}<a href="{{ .url | relURL }}">{{ .name }}</a>{{ end }}</p>
+      <p class="intro-links">{{ range . }}<a href="{{ .url | relURL }}" {{ partial "ext.html" .url }}>{{ .name }}</a>{{ end }}</p>
       {{- end }}
     </section>
 

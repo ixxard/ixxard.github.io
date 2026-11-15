@@ -3,10 +3,10 @@
     <span>© {{ now.Year }} {{ site.Params.author | default site.Title }}</span>
     <span class="foot-links">
       {{- range site.Params.links }}
-      <a href="{{ .url | relURL }}">{{ .name }}</a>
+      <a href="{{ .url | relURL }}" {{ partial "ext.html" .url }}>{{ .name }}</a>
       {{- end }}
     </span>
     {{- /* params.rev is the commit being built: CI sets HUGO_PARAMS_REV to github.sha. */}}
-    <span class="foot-note">static html · no trackers{{ with site.Params.rev }} · <a href="{{ site.Params.repo }}/commit/{{ . }}" title="the commit this page was built from">rev {{ substr . 0 7 }}</a>{{ end }}</span>
+    <span class="foot-note">static html · no cookies{{ with site.Params.rev }} · <a href="{{ site.Params.repo }}/commit/{{ . }}" {{ partial "ext.html" site.Params.repo }} title="the commit this page was built from">rev {{ substr . 0 7 }}</a>{{ end }}</span>
   </div>
 </footer>

@@ -60,6 +60,8 @@ body {
 a { color: inherit; text-decoration-line: underline; text-decoration-color: color-mix(in oklab, var(--accent) 55%, transparent); text-decoration-thickness: 1px; text-underline-offset: .22em; }
 a:hover { color: var(--accent); text-decoration-color: currentColor; }
 :focus-visible { outline: 2px solid var(--accent); outline-offset: 2px; border-radius: 2px; }
+/* links in post text that open in a new tab get a small arrow (read out as "opens in a new tab") */
+.prose :is(p, li, td) > a[target="_blank"]::after { content: "\2197"; content: "\2197" / " (opens in a new tab)"; display: inline-block; margin-left: .12em; font-size: .72em; color: var(--fg-3); text-decoration: none; }
 img, svg, video { max-width: 100%; height: auto; }
 code, kbd, pre, samp { font-family: var(--mono); }
 kbd { font-size: .78em; padding: .05em .4em; border: 1px solid var(--line); border-bottom-width: 2px; border-radius: 4px; background: var(--bg-2); color: var(--fg-2); }
