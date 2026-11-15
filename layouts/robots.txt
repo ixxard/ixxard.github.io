@@ -1,0 +1,6 @@
+# {{ site.Title }}. Nothing is hidden from crawlers here.
+# Humans, on the other hand, should try the home page with a keyboard.
+User-agent: *
+Disallow:
+
+Sitemap: {{ "sitemap.xml" | absURL }}

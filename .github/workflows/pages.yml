@@ -33,6 +33,7 @@ jobs:
       - name: Build
         env:
           HUGO_ENVIRONMENT: production
+          HUGO_PARAMS_REV: ${{ github.sha }}   # footer shows "rev abc1234"
         run: hugo --gc --minify --baseURL "${{ steps.pages.outputs.base_url }}/"
       - uses: actions/upload-pages-artifact@v4
         with:

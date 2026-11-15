@@ -404,7 +404,9 @@ details.callout[open] > summary { margin-bottom: .45rem; }
    ========================================================================== */
 .notfound { padding-top: 5rem; }
 .term { padding: 1.2rem 1.3rem; border: 1px solid var(--line); border-radius: var(--r); background: var(--code-bg); font: .9rem/1.8 var(--mono); white-space: pre-wrap; }
-.term .gp { color: var(--accent); }
+.term .gp, .term strong { color: var(--accent); }
+.term .nf-dim { color: var(--fg-3); }
+@media (max-width: 40rem) { .term { padding: 1rem; font-size: .75rem; } }
 
 @media (prefers-reduced-motion: reduce) {
   .cursor { animation: none; }

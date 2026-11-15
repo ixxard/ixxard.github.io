@@ -1,8 +1,21 @@
 {{ define "main" }}
+{{- /* A missing page, reported the way a VMM reports a guest touching unmapped memory:
+       a data abort from EL1 with a stage-2 translation fault (ESR 0x92000007).
+       The "IPA" is a page-aligned FNV-1a hash of the path, so each URL faults somewhere different. */ -}}
 <div class="wrap notfound">
-  <pre class="term"><span class="gp">$</span> cat <span id="nf-path">this-page</span>
-cat: <span id="nf-path2">this-page</span>: No such file or directory
+<pre class="term"><span class="gp">$</span> curl <span data-nf="url">this page</span>
+<span class="nf-dim">hvf: guest exit, no stage-2 mapping</span>
+exit reason : 1 (1 = exception)
+syndrome    : 0x0000000092000007
+  EC        : 0x24 (data abort, lower EL)
+  DFSC      : 0x07 (translation fault, L3)
+fault IPA   : <span data-nf="ipa">0x000000000000</span>
+
+<strong>404</strong>: nothing is mapped at this address.
 <span class="gp">$</span> cd <a href="{{ "/" | relURL }}">~</a></pre>
 </div>
-<script>(function(){var p=decodeURIComponent(location.pathname);document.getElementById("nf-path").textContent=p;document.getElementById("nf-path2").textContent=p})()</script>
+<script>(function(){var p=decodeURIComponent(location.pathname),h=2166136261,i;for(i=0;i<p.length;i++){h^=p.charCodeAt(i);h=Math.imul(h,16777619)>>>0}
+var q=function(k){return document.querySelector('[data-nf="'+k+'"]')};
+q("url").textContent=location.host+p;
+q("ipa").textContent="0x0000"+((h&0xfffff000)>>>0).toString(16).padStart(8,"0")})()</script>
 {{ end }}

@@ -2,7 +2,7 @@
 <div class="home-grid">
   <div class="home-main">
     <section class="intro">
-      <h1 class="intro-name">{{ site.Params.brand | default site.Title | safeHTML }}</h1>
+      <h1 class="intro-name">{{ site.Params.brand | default site.Title | safeHTML }}<span class="cursor" data-egg aria-hidden="true"></span></h1>
       {{- with .Content }}
       <div class="intro-bio prose">{{ . }}</div>
       {{- else }}{{ with site.Params.bio }}
@@ -56,4 +56,49 @@
     {{- end }}
   </aside>
 </div>
+
+{{- /* Easter eggs, home page only. This loader is all that ships with the page;
+       assets/js/egg.js is fetched the first time someone triggers one. */}}
+{{- $egg := resources.Get "js/egg.js" | minify | fingerprint }}
+<script>
+(() => {
+  const d = document;
+  let m;
+  const egg = (mode, arg) => (m ||= import({{ $egg.RelPermalink }})).then((x) => x.default(mode, arg));
+  window.hvc = (imm) => void egg("hvc", imm);
+  console.log("%c d2800520  mov  x0, #41\n 91000400  add  x0, x0, #1\n d40000e2  hvc  #7", "font:12px/1.6 ui-monospace,monospace;color:{{ site.Params.accent | default "#5ee6c0" }}");
+  console.log("x0 = 42. Since you opened devtools: hvc() traps to the host, and ~ on the page opens a console.");
+  const K = "ArrowUp ArrowUp ArrowDown ArrowDown ArrowLeft ArrowRight ArrowLeft ArrowRight b a".split(" ");
+  let i = 0;
+  d.addEventListener("keydown", (e) => {
+    if (e.metaKey || e.ctrlKey || e.altKey || e.target.closest?.("input, textarea, select, [contenteditable]")) return;
+    const k = e.key.length === 1 ? e.key.toLowerCase() : e.key;
+    i = k === K[i] ? i + 1 : k === K[0] ? (i === 2 ? 2 : 1) : 0;
+    if (i === K.length) { i = 0; egg("demo"); }
+    else if (k === "~" || k === "`") { e.preventDefault(); egg("console"); }
+  });
+  d.querySelector(".intro [data-egg]")?.addEventListener("click", () => egg("console"));
+})();
+</script>
+{{ end }}
+
+{{ define "banner" }}
+{{- /* Go templates drop HTML comments written in a template, so this one is a string.
+       [if human] keeps the minifier from removing it; the spaces are U+00A0 so it can't collapse them. */}}
+{{ `<!--[if human]>
+ 
+     .---------------------------------------------.
+     |  sankrant.systems                           |
+     |                                             |
+     |    d2800520    mov  x0, #41                 |
+     |    91000400    add  x0, x0, #1              |
+     |    d40000e2    hvc  #7                      |
+     |                                             |
+     |  you read page source. you'll fit in here.  |
+     |  this page has a console: press ~           |
+     |  and a demo, for anyone who knows the code  |
+     |  from 1986.                                 |
+     '---------------------------------------------'
+ 
+<![endif]-->` | safeHTML }}
 {{ end }}

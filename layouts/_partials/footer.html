@@ -6,6 +6,7 @@
       <a href="{{ .url | relURL }}">{{ .name }}</a>
       {{- end }}
     </span>
-    <span class="foot-note">static html · no trackers</span>
+    {{- /* params.rev is the commit being built: CI sets HUGO_PARAMS_REV to github.sha. */}}
+    <span class="foot-note">static html · no trackers{{ with site.Params.rev }} · <a href="{{ site.Params.repo }}/commit/{{ . }}" title="the commit this page was built from">rev {{ substr . 0 7 }}</a>{{ end }}</span>
   </div>
 </footer>

@@ -43,6 +43,9 @@ ignoreFiles          = ['(^|/)\.obsidian/', '(^|/)\.trash/', '(^|/)_templates/']
     name = "github"
     url  = "https://github.com/ixxard"
   [[params.links]]
+    name = "x"
+    url  = "https://x.com/snk_xed"
+  [[params.links]]
     name = "rss"
     url  = "/index.xml"
 
