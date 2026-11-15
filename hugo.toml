@@ -49,8 +49,17 @@ ignoreFiles          = ['(^|/)\.obsidian/', '(^|/)\.trash/', '(^|/)_templates/']
     name = "x"
     url  = "https://x.com/snk_xed"
   [[params.links]]
+    name = "bluesky"
+    url  = "https://bsky.app/profile/ixx.bsky.social"
+  [[params.links]]
     name = "rss"
     url  = "/index.xml"
+
+  # Writing published somewhere else: a small "elsewhere" list in the home page's side rail.
+  [[params.elsewhere]]
+    title = "ARM64 Decompilation with Prolog"
+    venue = "Paged Out! #8 · p. 71"
+    url   = "https://pagedout.institute/webview.php?issue=8&page=71&article=ARM64+Decompilation+with+Prolog"
 
 # Top navigation. Add, remove or reorder freely.
 [[menus.main]]

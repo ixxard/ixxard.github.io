@@ -2,7 +2,7 @@
 // (the small loader in layouts/home.html imports this file on demand):
 //
 //   ~  or a click on the big blinking cursor     a drop-down console
-//   ↑ ↑ ↓ ↓ ← → ← → b a                          a tiny demoscene intro
+//   ↑ ↑ ↓ ↓ ← → ← → b a  (phones: swipes, 2 taps)  a tiny demoscene intro
 //   hvc() in the browser's devtools              part 01's guest exit, any imm16
 const d = document, root = d.documentElement;
 
@@ -60,13 +60,14 @@ const closeConsole = () => {
 
 // Everything `ls` can see is already on the home page.
 const entries = () => [...d.querySelectorAll(".home-main .parts a, .home-main .log a, .home-rail .rail-list a")];
+const dirs = () => [...d.querySelectorAll(".nav a")].map((a) => a.textContent.trim().toLowerCase() + "/").join("  ");
 const go = (href) => { location.href = href; return null; };
 
 const cmds = {
   help: () => "help  ls  open <n>  whoami  uname -a  hvc #<imm>  echo  theme  demo  clear  exit",
-  ls: () => ["series/  notes/  tags/  about/", ...entries().map((a, i) => `${String(i + 1).padStart(2)}  ${a.textContent.trim()}`)].join("\n"),
+  ls: () => [dirs(), ...entries().map((a, i) => `${String(i + 1).padStart(2)}  ${a.textContent.trim()}`)].join("\n"),
   open: (n) => {
-    if (!n) return "usage: open <number from ls, or series/ notes/ tags/ about/>";
+    if (!n) return `usage: open <number from ls, or ${dirs()}>`;
     if (n === "~" || n === "/") return go("/");
     const name = n.replace(/\/$/, "").toLowerCase();
     const a = entries()[n - 1] || [...d.querySelectorAll(".nav a")].find((l) => l.textContent.trim().toLowerCase() === name);
@@ -202,7 +203,8 @@ const demo = () => {
     if (e.key === "Escape" || e.key === "q") { e.preventDefault(); e.stopPropagation(); leave(); }
   };
   d.addEventListener("keydown", onKey, true);
-  box.addEventListener("click", leave);
+  // The last tap of the code on a phone also sends a click; don't let it close the demo it just opened.
+  box.addEventListener("click", () => performance.now() - t0 > 500 && leave());
   draw(t0 + (still ? 4000 : 0));
 };
 

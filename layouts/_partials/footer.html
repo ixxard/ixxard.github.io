@@ -8,5 +8,9 @@
     </span>
     {{- /* params.rev is the commit being built: CI sets HUGO_PARAMS_REV to github.sha. */}}
     <span class="foot-note">static html · no cookies{{ with site.Params.rev }} · <a href="{{ site.Params.repo }}/commit/{{ . }}" {{ partial "ext.html" site.Params.repo }} title="the commit this page was built from">rev {{ substr . 0 7 }}</a>{{ end }}</span>
+    {{- /* The easter eggs live on the home page only (layouts/home.html, assets/js/egg.js). */}}
+    {{- if .IsHome }}
+    <p class="foot-egg">psst: <span class="egg-k">press <kbd>~</kbd> for a console, or try the Konami code: ↑ ↑ ↓ ↓ ← → ← → b a</span><span class="egg-t">tap the blinking cursor for a console, or swipe the Konami code: ↑ ↑ ↓ ↓ ← → ← →, then tap twice</span></p>
+    {{- end }}
   </div>
 </footer>

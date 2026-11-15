@@ -12,4 +12,6 @@ I'm Sankrant Chaubey, a senior software developer at Aquila Clouds. I'm interest
 
 ## Contact
 
-[@snk_xed](https://x.com/snk_xed) on X
+- [@snk_xed](https://x.com/snk_xed) on X
+- [@ixx.bsky.social](https://bsky.app/profile/ixx.bsky.social) on Bluesky
+- [@sizzle.rizz](https://www.instagram.com/sizzle.rizz/) on Instagram, which I share with my wife

@@ -54,6 +54,16 @@
       <p class="rail-tags">{{ range .ByCount }}<a href="{{ .Page.RelPermalink }}">#{{ .Page.LinkTitle }}</a>{{ end }}</p>
     </section>
     {{- end }}
+    {{- with site.Params.elsewhere }}
+    <section class="block" aria-labelledby="h-elsewhere">
+      <h2 class="label" id="h-elsewhere">elsewhere</h2>
+      <ol class="rail-list">
+        {{- range . }}
+        <li><span class="venue">{{ .venue }}</span><a href="{{ .url }}" {{ partial "ext.html" .url }}>{{ .title }}</a></li>
+        {{- end }}
+      </ol>
+    </section>
+    {{- end }}
   </aside>
 </div>
 
@@ -69,14 +79,25 @@
   console.log("%c d2800520  mov  x0, #41\n 91000400  add  x0, x0, #1\n d40000e2  hvc  #7", "font:12px/1.6 ui-monospace,monospace;color:{{ site.Params.accent | default "#5ee6c0" }}");
   console.log("x0 = 42. Since you opened devtools: hvc() traps to the host, and ~ on the page opens a console.");
   const K = "ArrowUp ArrowUp ArrowDown ArrowDown ArrowLeft ArrowRight ArrowLeft ArrowRight b a".split(" ");
-  let i = 0;
+  let i = 0, sx = 0, sy = 0;
+  const step = (k) => {
+    i = k === K[i] ? i + 1 : k === K[0] ? (i === 2 ? 2 : 1) : 0;
+    if (i === K.length) { i = 0; egg("demo"); }
+  };
   d.addEventListener("keydown", (e) => {
     if (e.metaKey || e.ctrlKey || e.altKey || e.target.closest?.("input, textarea, select, [contenteditable]")) return;
     const k = e.key.length === 1 ? e.key.toLowerCase() : e.key;
-    i = k === K[i] ? i + 1 : k === K[0] ? (i === 2 ? 2 : 1) : 0;
-    if (i === K.length) { i = 0; egg("demo"); }
-    else if (k === "~" || k === "`") { e.preventDefault(); egg("console"); }
+    step(k);
+    if (k === "~" || k === "`") { e.preventDefault(); egg("console"); }
   });
+  // On a phone: swipe the arrows, then tap twice for b a.
+  d.addEventListener("touchstart", (e) => { sx = e.touches[0].clientX; sy = e.touches[0].clientY; }, { passive: true });
+  d.addEventListener("touchend", (e) => {
+    if (e.touches.length) return;
+    const dx = e.changedTouches[0].clientX - sx, dy = e.changedTouches[0].clientY - sy, ax = Math.abs(dx), ay = Math.abs(dy);
+    if (ax < 12 && ay < 12) step(K[i] === "b" || K[i] === "a" ? K[i] : "tap");
+    else if (Math.max(ax, ay) > 30) step(ax > ay ? (dx > 0 ? "ArrowRight" : "ArrowLeft") : dy > 0 ? "ArrowDown" : "ArrowUp");
+  }, { passive: true });
   d.querySelector(".intro [data-egg]")?.addEventListener("click", () => egg("console"));
 })();
 </script>
