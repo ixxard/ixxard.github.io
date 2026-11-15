@@ -1,0 +1,9 @@
+{
+  "useMarkdownLinks": true,
+  "newLinkFormat": "relative",
+  "attachmentFolderPath": "./",
+  "alwaysUpdateLinks": true,
+  "strictLineBreaks": true,
+  "showUnsupportedFiles": false,
+  "propertiesInDocument": "visible"
+}

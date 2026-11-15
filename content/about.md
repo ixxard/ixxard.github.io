@@ -1,6 +1,6 @@
 ---
 title: "About"
-description: "Senior software developer working on hypervisors, Arm64 virtualization and graphics."
+description: "Systems programming, optimization and security research."
 draft: false         # true hides the page and its "about" menu entry
 toc: false
 menus: main
@@ -8,16 +8,16 @@ weight: 40
 aliases: ["/About.html", "/About/"]   # old Jekyll URLs keep working
 ---
 
-I'm Sankrant, a senior software developer at Aquila Clouds. My work sits close to the machine: hypervisors, Arm64 virtualization and the C code that drives them. I also write about computer graphics.
+I'm Sankrant Chaubey, a senior software developer at Aquila Clouds. I'm interested in how systems work, from the machine up.
 
-This site is where I explain those systems from the code up, in multi-part series, standalone posts and shorter notes.
+This site is where I write about it, starting from the code: multi-part series, standalone posts and shorter notes.
 
-## Expertise
+## Areas of interest
 
-- **Virtualization on Apple silicon:** Hypervisor.framework, QEMU's HVF accelerator, and the Arm64 exception model beneath them (EL0 to EL2, traps, VHE).
-- **Nested virtualization:** running a hypervisor inside a guest, with Windows 11 on Arm and Hyper-V as the target.
-- **Systems programming in C:** virtual machine monitors built from first principles.
-- **Computer graphics:** SDL3 and graphics programming.
+- Systems programming
+- Performance optimization
+- Information security and vulnerability research
+- The demoscene, and technology in general
 
 ## Selected work
 
@@ -36,10 +36,6 @@ PCQuest · May 2025
 An introductory guide to SDL3.
 
 <a class="badge-link" href="/pdfs/PQCSankrant.pdf"><img src="/images/Pcqlogo_sm.png" alt="PCQuest" width="125" height="40"><span>Read the article (PDF)</span></a>
-
-## Interests
-
-Exploratory computing, physics and video games.
 
 ## Contact
 

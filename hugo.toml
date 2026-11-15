@@ -9,19 +9,20 @@ locale       = "en-us"
 enableRobotsTXT      = true
 summaryLength        = 30
 capitalizeListTitles = false   # tags stay as you typed them: #arm64, not #Arm64
+ignoreFiles          = ['(^|/)\.obsidian/', '(^|/)\.trash/', '(^|/)_templates/']   # Obsidian's own files
 
 [params]
-  author      = "Sankrant"
+  author      = "Sankrant Chaubey"
 
   # Wordmark in the top-left corner and the big name on the home page. Plain text,
   # or wrap a piece in <em> to paint it in the accent colour.
   brand       = "Sankrant's <em>Tech Blog</em>"
 
   # One or two lines under your name on the home page. Markdown is fine.
-  bio         = "Notes from building a hypervisor on Apple silicon, one instruction at a time."
+  bio         = "I'm Sankrant Chaubey. I write about how systems work: systems programming, optimization, security research and the demoscene."
 
   # Used for search engines and share cards when a page has no description.
-  description = "Hypervisors, Arm64 and systems programming, written up from the code."
+  description = "Sankrant Chaubey on how systems work: systems programming, optimization, security research and the demoscene."
 
   # One colour drives links, highlights, the reading bar and share cards.
   # Some that work in both themes: "#5ee6c0" mint, "#ff7a45" ember,
