@@ -281,6 +281,10 @@ h2:hover > .anchor, h3:hover > .anchor, h4:hover > .anchor { opacity: 1; }
 .prose hr { border: 0; height: 1px; margin: 3em 0; background: var(--line); }
 .prose blockquote { margin: 1.5em 0; padding: 0 0 0 1.1em; border-left: 2px solid var(--line); color: var(--fg-2); }
 .prose mark { background: var(--tint); color: inherit; padding: 0 .15em; }
+.prose .meta { margin: -.35em 0 .7em; font: .76rem/1.4 var(--mono); color: var(--fg-3); letter-spacing: .02em; }
+.badge-link { display: inline-flex; align-items: center; gap: .9rem; padding: .5rem .9rem .5rem .5rem; border: 1px solid var(--line); border-radius: var(--r); background: var(--bg-2); font: .8rem var(--mono); color: var(--fg-2); text-decoration: none; }
+.badge-link img { display: block; border-radius: 3px; }
+.badge-link:hover { border-color: var(--accent); color: var(--fg); }
 .prose dt { font-weight: 650; }
 .prose dd { margin: 0 0 .6em 1.2em; color: var(--fg-2); }
 .prose details:not(.callout) { margin: 1.5em 0; padding: .6rem .9rem; border: 1px solid var(--line); border-radius: var(--r); }
