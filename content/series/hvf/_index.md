@@ -5,7 +5,7 @@ weight: 10             # order among series on the home page (lower first)
 
 # Planned parts. They show as "soon" until a part with the same label is published.
 roadmap:
-  # - { part: "00b", title: "..." }
+  - { part: "02", title: "Devices and EL2" }
 ---
 
 <!-- Optional intro, shown on the series page above the list of parts. -->

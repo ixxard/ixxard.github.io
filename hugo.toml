@@ -19,7 +19,7 @@ ignoreFiles          = ['(^|/)\.obsidian/', '(^|/)\.trash/', '(^|/)_templates/']
   brand       = "Sankrant's <em>Tech Blog</em>"
 
   # One or two lines under your name on the home page. Markdown is fine.
-  bio         = "I'm Sankrant Chaubey. I write about how systems work: systems programming, optimization, security research and the demoscene."
+  bio         = "I focus mostly on systems programming, optimization, security research and the demoscene."
 
   # Used for search engines and share cards when a page has no description.
   description = "Sankrant Chaubey on how systems work: systems programming, optimization, security research and the demoscene."
@@ -30,7 +30,7 @@ ignoreFiles          = ['(^|/)\.obsidian/', '(^|/)\.trash/', '(^|/)_templates/']
   accent       = "#5ee6c0"
   defaultTheme = "auto"            # auto | dark | light   (readers can still toggle with t)
 
-  # Where this site's source lives: powers "view on GitHub" links on code and pages.
+  # Where this site's source lives: powers "view on GitHub" links on code.
   repo   = "https://github.com/ixxard/ixxard.github.io"
   branch = "main"
 

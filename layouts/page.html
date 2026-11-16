@@ -31,16 +31,13 @@
       {{ .Content }}
     </div>
 
-    {{- if or $code (and site.Params.repo .File) }}
+    {{- with $code }}
     <p class="post-src">
-      {{- with $code }}
         {{- /* `code` is a folder in this repo, or a full URL such as a branch of another repo. */}}
         {{- $href := printf "%s/tree/%s/%s" site.Params.repo (site.Params.branch | default "main") . }}
         {{- $label := printf "%s/" . }}
         {{- if hasPrefix . "http" }}{{ $href = . }}{{ $label = . | replaceRE `^https?://(github\.com/)?` "" | replaceRE `/tree/([^/]+)/?$` " @ $1" }}{{ end }}
       <a href="{{ $href }}" {{ partial "ext.html" $href }}>code for this {{ if $s }}part{{ else }}post{{ end }}: {{ $label }}</a>
-      {{- end }}
-      {{- with .File }}{{ with site.Params.repo }}<a href="{{ . }}/blob/{{ site.Params.branch | default "main" }}/content/{{ $.File.Path }}" {{ partial "ext.html" site.Params.repo }}>source of this page</a>{{ end }}{{ end }}
     </p>
     {{- end }}
 
